@@ -23,4 +23,4 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     inlineScript: |
       tofu init -input=false
-      tofu plan -input=false -out=tfplan
+      tofu plan -input=false -out=tfplan -var-file=variables.tfvars
