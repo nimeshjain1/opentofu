@@ -17,7 +17,7 @@ steps:
 - task: AzureCLI@2
   displayName: 'Tofu init & plan'
   inputs:
-    azureSubscription: 'my-service-connection'
+    azureSubscription: 'test-service-connection'
     scriptType: bash
     scriptLocation: inlineScript
     workingDirectory: '$(System.DefaultWorkingDirectory)/infra'
