@@ -1,0 +1,26 @@
+variables:
+  TOFU_VERSION: '1.12.0'
+
+steps:
+- script: |
+    set -e
+    curl -fsSL -o tofu.zip \
+      https://github.com/opentofu/opentofu/releases/download/v$(TOFU_VERSION)/tofu_$(TOFU_VERSION)_linux_amd64.zip
+    unzip -o tofu.zip tofu -d $(Agent.ToolsDirectory)/tofu
+    chmod +x $(Agent.ToolsDirectory)/tofu/tofu
+    echo "##vso[task.prependpath]$(Agent.ToolsDirectory)/tofu"
+  displayName: 'Install OpenTofu'
+
+- script: tofu version
+  displayName: 'Verify install'
+
+- task: AzureCLI@2
+  displayName: 'Tofu init & plan'
+  inputs:
+    azureSubscription: 'my-service-connection'
+    scriptType: bash
+    scriptLocation: inlineScript
+    workingDirectory: '$(System.DefaultWorkingDirectory)/infra'
+    inlineScript: |
+      tofu init -input=false
+      tofu plan -input=false -out=tfplan
